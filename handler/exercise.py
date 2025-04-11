@@ -4,6 +4,104 @@ from flask import jsonify
 
 class ExerciseHandler:
 
+    # This method maps the exercise data to a dictionary format.
+    def map_to_dict(self, exercises):
+        result = {}
+        result["id"] = exercises[0]
+        result["name"] = exercises[1]
+        result["category"] = exercises[2]
+        result["equipment"] = exercises[3]
+        result["mechanic"] = exercises[4]
+        result["force"] = exercises[5]
+        result["level"] = exercises[6]
+        result["alter_id"] = exercises[7]
+        return result
+    
+    # This method maps the instructions data to a dictionary format.
+    def map_to_dict_instructions(self, instructions):
+        result = {}
+        result["instruction_id"] = instructions[0]
+        result["instruction_number"] = instructions[1]
+        result["description"] = instructions[2]
+        return result
+    
+    # This method maps the images data to a dictionary format.
+    def map_to_dict_images(self, images):
+        result = {}
+        result["image_id"] = images[0]
+        result["path"] = images[1]
+        return result
+    
+    # This method maps the primary muscles data to a dictionary format.
+    def map_to_dict_primary_muscles(self, primary_muscles):
+        result = {}
+        result["muscle_id"] = primary_muscles[0]
+        result["name"] = primary_muscles[1] 
+        return result
+    
+    # This method maps the secondary muscles data to a dictionary format.
+    def map_to_dict_secondary_muscles(self, secondary_muscles):
+        result = {}
+        result["muscle_id"] = secondary_muscles[0]
+        result["name"] = secondary_muscles[1]
+        return result
+    
+    # This method maps the exercise data to a dictionary format for the getExerciseById method.
+    # It includes instructions, images, primary muscles, and secondary muscles.
+    def map_to_dic_for_getExerciseById(self, exercise, instructions, images, primary_muscles, secondary_muscles):
+        result = {}
+        
+        result["id"] = exercise[0]
+        result["name"] = exercise[1]
+        result["category"] = exercise[2]
+        result["equipment"] = exercise[3]
+        result["mechanic"] = exercise[4]
+        result["force"] = exercise[5]
+        result["level"] = exercise[6]
+        result["alter_id"] = exercise[7]
+
+        instructions_list = []
+        if not instructions:
+            instructions_list.append("Error, No Instructions found")
+        else:
+            for instruction in instructions:
+                obj = self.map_to_dict_instructions(instruction)
+                instructions_list.append(obj)
+        
+        images_list = []
+        if not images:
+            images_list.append("Error, No Images found")
+        else:
+            for image in images:
+                obj = self.map_to_dict_images(image)
+                images_list.append(obj)
+
+        primary_muscles_list = []
+        if not primary_muscles:
+            primary_muscles_list.append("Error, No Primary muscles found")
+        else:
+            for primary_muscle in primary_muscles:
+                obj = self.map_to_dict_primary_muscles(primary_muscle)
+                primary_muscles_list.append(obj)
+
+
+        secondary_muscles_list = []
+        if not secondary_muscles:
+            secondary_muscles_list.append("Error, No Secondary muscles found")
+        else:
+            for secondary_muscle in secondary_muscles:
+                obj = self.map_to_dict_secondary_muscles(secondary_muscle)
+                secondary_muscles_list.append(obj)
+
+
+        result["instructions"] = instructions_list
+        result["images"] = images_list
+        result["primary_muscles"] = primary_muscles_list
+        result["secondary_muscles"] = secondary_muscles_list
+
+        return result
+    
+    # This method creates a new exercise in the database.
     def createExercise(self, json):
 
         name = json["name"]
@@ -22,6 +120,7 @@ class ExerciseHandler:
             json["id"] = exercise_id
             return jsonify(json), 201
 
+    # This methods gets all exercises from the database.
     def getAllExercise(self):
         dao = exerciseDAO()
         exercise_list = dao.getAllExercise()
@@ -31,15 +130,22 @@ class ExerciseHandler:
             result_list.append(obj)
         return jsonify(result_list), 200
 
+    #This method gets an exercise by its ID from the database.
     def getExerciseById(self, id):
         dao = exerciseDAO()
         exercise = dao.getExerciseById(id)
-        if not exercise:
-            return jsonify("Not Found"), 404
-        else:
-            result = self.map_to_dict(exercise)
+        instructions = dao.getInstructionsById(id)
+        images = dao.getImagesById(id)
+        primary_muscles = dao.getPrimaryMuscleById(id)
+        secondary_muscles = dao.getSecondaryMuscleById(id)
+        
+        if exercise is not None:
+            result = self.map_to_dic_for_getExerciseById(exercise, instructions, images, primary_muscles, secondary_muscles)
             return jsonify(result), 200
+        else:
+            return jsonify(f"No Exercise found with id={id}"), 404
 
+    #This method deletes an exercise by its ID from the database.
     def deleteExerciseById(self, id):
         dao = exerciseDAO()
         deleted = dao.deleteExerciseById(id)
@@ -47,16 +153,3 @@ class ExerciseHandler:
             return jsonify(f"Deleted record with id={id}"), 200
         else:
             return jsonify("Not Found"), 404
-
-    def map_to_dict(self, exercises):
-        result = {}
-        #id, name, category, equipment, mechanic, force, level, alter_id
-        result["id"] = exercises[0]
-        result["name"] = exercises[1]
-        result["category"] = exercises[2]
-        result["equipment"] = exercises[3]
-        result["mechanic"] = exercises[4]
-        result["force"] = exercises[5]
-        result["level"] = exercises[6]
-        result["alter_id"] = exercises[7]
-        return result

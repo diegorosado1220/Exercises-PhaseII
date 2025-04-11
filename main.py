@@ -8,6 +8,8 @@ CORS(app)
 @app.route('/')
 def index():
     return "General Kenobi"
+
+
 @app.route('/exercise', methods=['GET', 'POST'])
 def handleExercise():
     if request.method == 'GET':
@@ -17,18 +19,22 @@ def handleExercise():
 
     else:
         return jsonify("Unsupported method"), 405
+    
 
 @app.route('/exercise/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def handleExerciseById(id):
     if request.method == 'DELETE':
-        #return ExerciseHandler().deleteExerciseById(id)
+        # return ExerciseHandler().deleteExerciseById(id)
         pass
-    # elif request.method == 'PUT':
-    #     return ExerciseHandler().updateExerciseById(request.json, id)
+    elif request.method == 'PUT':
+        #return ExerciseHandler().updateExerciseById(request.json, id)
+        pass
     elif request.method == 'GET':
         return ExerciseHandler().getExerciseById(id)
     else:
         return jsonify("Unsupported Method"), 405
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
