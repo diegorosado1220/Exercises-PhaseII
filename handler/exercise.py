@@ -4,6 +4,24 @@ from flask import jsonify
 
 class ExerciseHandler:
 
+    def createExercise(self, json):
+
+        name = json["name"]
+        category = json["category"]
+        equipment = json["equipment"]
+        mechanic = json["mechanic"]
+        force = json["force"]
+        level = json["level"]
+        alter_id = json["alter_id"]
+
+        dao = exerciseDAO()
+        exercise_id = dao.createExercise(name, category, equipment, mechanic, force, level, alter_id)
+        if not exercise_id:
+            return jsonify("Server Error"), 500
+        else:
+            json["id"] = exercise_id
+            return jsonify(json), 201
+
     def getAllExercise(self):
         dao = exerciseDAO()
         exercise_list = dao.getAllExercise()

@@ -15,6 +15,15 @@ class exerciseDAO():
 
         self.conn = psycopg2.connect(url)
 
+    def createExercise(self, name, category, equipment, mechanic, force, level, alter_id):
+        cursor = self.conn.cursor()
+        query = "INSERT INTO exercises (name, category, equipment, mechanic, force, level, alter_id) VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id"
+        cursor.execute(query, (name, category, equipment, mechanic, force, level, alter_id))
+        exercise_id = cursor.fetchone()[0]
+        self.conn.commit()
+        cursor.close()
+        return exercise_id
+
     def getAllExercise(self):
         cursor = self.conn.cursor()
         query = "select id, name, category, equipment, mechanic, force, level, alter_id from exercises"

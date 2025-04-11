@@ -8,12 +8,12 @@ CORS(app)
 @app.route('/')
 def index():
     return "General Kenobi"
-@app.route('/exercise')
+@app.route('/exercise', methods=['GET', 'POST'])
 def handleExercise():
     if request.method == 'GET':
         return ExerciseHandler().getAllExercise()
     elif request.method == 'POST':
-        return ExerciseHandler().insertExercise(request.json)
+        return ExerciseHandler().createExercise(request.json)
 
     else:
         return jsonify("Unsupported method"), 405
