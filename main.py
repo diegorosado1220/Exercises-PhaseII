@@ -21,7 +21,8 @@ def handleExercise():
 @app.route('/exercise/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def handleExerciseById(id):
     if request.method == 'DELETE':
-        return ExerciseHandler().deleteExerciseById(id)
+        #return ExerciseHandler().deleteExerciseById(id)
+        pass
     # elif request.method == 'PUT':
     #     return ExerciseHandler().updateExerciseById(request.json, id)
     elif request.method == 'GET':
