@@ -115,5 +115,26 @@ class exerciseDAO():
         result = cursor.fetchall()
         cursor.close()
         return result
-    
-    
+
+    def updateExercise(self, id, name, category, equipment, mechanic, force, level, alter_id):
+        cursor = self.conn.cursor()
+        pre_query = "SELECT 1 FROM exercises WHERE id = %s"
+        cursor.execute(pre_query, (id,))
+        exists = cursor.fetchone()
+        if exists:
+            query = "UPDATE exercises SET name = %s, category = %s, equipment = %s, mechanic = %s, force = %s, level = %s, alter_id = %s WHERE id = %s"
+            cursor.execute(query, (name, category, equipment, mechanic, force, level, alter_id, id))
+            self.conn.commit()
+            cursor.close()
+            return True
+        else:
+            cursor.close()
+            return False
+
+    def getExerciseForUpdate(self, id):
+        cursor = self.conn.cursor()
+        query = "SELECT id, name, category, equipment, mechanic, force, level, alter_id FROM exercises WHERE id = %s"
+        cursor.execute(query, (id,))
+        result = cursor.fetchone()
+        cursor.close()
+        return result

@@ -16,7 +16,6 @@ def handleExercise():
         return ExerciseHandler().getAllExercise()
     elif request.method == 'POST':
         return ExerciseHandler().createExercise(request.json)
-
     else:
         return jsonify("Unsupported method"), 405
     
@@ -27,7 +26,7 @@ def handleExerciseById(id):
         # return ExerciseHandler().deleteExerciseById(id)
         pass
     elif request.method == 'PUT':
-        #return ExerciseHandler().updateExerciseById(request.json, id)
+        return ExerciseHandler().updateExerciseById(request.json, id)
         pass
     elif request.method == 'GET':
         return ExerciseHandler().getExerciseById(id)

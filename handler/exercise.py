@@ -145,6 +145,29 @@ class ExerciseHandler:
         else:
             return jsonify(f"No Exercise found with id={id}"), 404
 
+    def updateExerciseById(self, json, id):
+
+        name = json["name"]
+        category = json["category"]
+        equipment = json["equipment"]
+        mechanic = json["mechanic"]
+        force = json["force"]
+        level = json["level"]
+        alter_id = json["alter_id"]
+
+        dao = exerciseDAO()
+        updated = dao.updateExercise(id, name, category, equipment, mechanic, force, level, alter_id)
+
+        if name == "" or category == "" or equipment == "" or mechanic == "" or force == "" or level == "" or alter_id == "":
+            return jsonify("Missing Parameters"), 400
+        else:
+            if updated:
+                exercise = dao.getExerciseForUpdate(id)
+                result = self.map_to_dict(exercise)
+                return jsonify(result), 200
+            else:
+                return jsonify("Not Found"), 404
+
     #This method deletes an exercise by its ID from the database.
     def deleteExerciseById(self, id):
         dao = exerciseDAO()
