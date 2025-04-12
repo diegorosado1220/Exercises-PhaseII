@@ -176,7 +176,11 @@ class ExerciseHandler:
     def deleteExerciseById(self, id):
         dao = exerciseDAO()
         deleted = dao.deleteExerciseById(id)
-        if deleted:
+        if deleted == 0:
+            return jsonify(f"Record with id={id}, does not exist"), 404
+        elif deleted == 1:
             return jsonify(f"Deleted record with id={id}"), 200
+        elif deleted == 2:
+            return jsonify(f"Cannnot delete because its referenced"), 409
         else:
             return jsonify("Not Found"), 404

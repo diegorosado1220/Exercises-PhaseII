@@ -23,12 +23,14 @@ def handleExercise():
 @app.route('/exercise/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def handleExerciseById(id):
     if request.method == 'DELETE':
-        # return ExerciseHandler().deleteExerciseById(id)
-        pass
+        return ExerciseHandler().deleteExerciseById(id)
+        
     elif request.method == 'PUT':
         return ExerciseHandler().updateExerciseById(request.json, id)
+    
     elif request.method == 'GET':
         return ExerciseHandler().getExerciseById(id)
+    
     else:
         return jsonify("Unsupported Method"), 405
 

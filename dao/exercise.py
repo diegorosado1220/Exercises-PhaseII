@@ -1,5 +1,6 @@
 from config.pgconfig import pg_config
 import psycopg2
+from psycopg2 import errors
 
 
 class exerciseDAO():
@@ -41,15 +42,30 @@ class exerciseDAO():
         pre_query = "select 1 from exercises where id = %s"
         cursor.execute(pre_query, (id,))
         exists = cursor.fetchone()
+        
+        state_variable = 0   
+        
+        # If state_value is 0 it means that record does not exist.
+        # If state_value is 1 it means that record exists and it will be deleted.
+        # If state_value is 2 it means that record exists but it cannot be deleted because of foreign key constraint.
+        
         if exists:
-            query = "delete from exercises where id = %s"
-            cursor.execute(query, (id,))
-            self.conn.commit()
+            
+            try:
+                query = "delete from exercises where id = %s"
+                cursor.execute(query, (id,))
+                self.conn.commit()
+                state_variable = 1
+                
+            except errors.ForeignKeyViolation as e:
+                state_variable = 2
+                self.conn.rollback()
+                
             cursor.close()
-            return True
+            return state_variable
         else:
             cursor.close()
-            return False
+            return state_variable
 
     #This method gets an exercise by its ID from the database.
     def getExerciseById(self, id):
@@ -116,6 +132,7 @@ class exerciseDAO():
         cursor.close()
         return result
 
+    #This method updates an exercise in the database.
     def updateExercise(self, id, name, category, equipment, mechanic, force, level, alter_id):
         cursor = self.conn.cursor()
         pre_query = "SELECT 1 FROM exercises WHERE id = %s"
@@ -131,6 +148,7 @@ class exerciseDAO():
             cursor.close()
             return False
 
+    #This method gets an exercise for update by its ID from the database.
     def getExerciseForUpdate(self, id):
         cursor = self.conn.cursor()
         query = "SELECT id, name, category, equipment, mechanic, force, level, alter_id FROM exercises WHERE id = %s"
