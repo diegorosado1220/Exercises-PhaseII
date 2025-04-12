@@ -27,7 +27,6 @@ def handleExerciseById(id):
         pass
     elif request.method == 'PUT':
         return ExerciseHandler().updateExerciseById(request.json, id)
-        pass
     elif request.method == 'GET':
         return ExerciseHandler().getExerciseById(id)
     else:
