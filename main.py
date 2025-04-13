@@ -58,7 +58,8 @@ def handleExercisesByMucle(muscleid):
     else:
         return jsonify("Unsupported method"), 405
     
-    
+
+
 # This route handles the /championships endpoint for GET and POST requests.
 @app.route('/championships', methods=['POST', 'GET'])
 def handleChampionship():
@@ -82,6 +83,16 @@ def handleChampionshipById(id):
     else:
         return jsonify("Unsupported Method"), 40
 
+
+# Add an instruction to a specific exercise
+@app.route('/exercise/<int:exercise_id>/instruction', methods=['POST'])
+def addInstructionToExercise(exercise_id):
+    return ExerciseHandler().addInstructionToExercise(request.json, exercise_id)
+
+# Delete an instruction from a specific exercise
+# @app.route('/exercise/<int:exercise_id>/instruction/<int:instruction_id>', methods=['DELETE'])
+# def deleteInstructionFromExercise(exercise_id, instruction_id):
+#     return ExerciseHandler().deleteInstructionFromExercise(exercise_id, instruction_id)
 
 
 if __name__ == '__main__':

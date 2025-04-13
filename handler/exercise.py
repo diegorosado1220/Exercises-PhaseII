@@ -239,4 +239,35 @@ class ExerciseHandler:
             return jsonify(f"No exercise found with muscle = '{muscleid}' "), 404
         else:
             return jsonify(result), 200
-        
+
+
+
+    #this method is to add instruction to exercise
+    # POST /exercise/<exercise_id>/instruction
+    def addInstructionToExercise(self, json, exercise_id):
+        instruction_number = json["instruction_number"]
+        description = json["description"]
+
+        dao = exerciseDAO()
+        instruction_id = dao.addInstruction(exercise_id, instruction_number, description)
+
+        if instruction_id:
+            result = {
+                "instruction_id": instruction_id,
+                "exercise_id": exercise_id,
+                "instruction_number": instruction_number,
+                "description": description
+            }
+            return jsonify(result), 201
+        else:
+            return jsonify("Insert Failed"), 500
+
+    # DELETE /exercise/<exercise_id>/instruction/<instruction_id>
+    # def deleteInstructionFromExercise(self, exercise_id, instruction_id):
+    #     dao = exerciseDAO()
+    #     success = dao.deleteInstruction(exercise_id, instruction_id)
+    #
+    #     if success:
+    #         return '', 204
+    #     else:
+    #         return jsonify("Not Found"), 404
