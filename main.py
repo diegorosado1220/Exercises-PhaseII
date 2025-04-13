@@ -109,6 +109,11 @@ def addInstructionToExercise(exercise_id):
 def addImageToExercise(exercise_id):
     return ExerciseHandler().addImageToExercise(request.json, exercise_id)
 
+# Add primary muscle to an exercise
+@app.route('/exercise/<int:exercise_id>/primary-muscle', methods=['POST'])
+def addPrimaryMuscleToExercise(exercise_id):
+    return ExerciseHandler().addPrimaryMuscleToExercise(request.json, exercise_id)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

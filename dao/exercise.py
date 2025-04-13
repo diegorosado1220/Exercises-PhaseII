@@ -266,3 +266,12 @@ class exerciseDAO():
         self.conn.commit()
         cursor.close()
         return image_id
+
+    def addPrimaryMuscle(self, exercise_id, muscle_description):
+        cursor = self.conn.cursor()
+        query = "INSERT INTO exercise_primary_muscles (exercise_id, muscle) VALUES (%s, %s) RETURNING id"
+        cursor.execute(query, (exercise_id, muscle_description))
+        muscle_id = cursor.fetchone()[0]
+        self.conn.commit()
+        cursor.close()
+        return muscle_id
