@@ -267,6 +267,7 @@ class exerciseDAO():
         cursor.close()
         return image_id
 
+    #This method adds a primary muscle to an exercise
     def addPrimaryMuscle(self, exercise_id, muscle_description):
         cursor = self.conn.cursor()
         query = "INSERT INTO exercise_primary_muscles (exercise_id, muscle) VALUES (%s, %s) RETURNING id"
@@ -275,8 +276,28 @@ class exerciseDAO():
         self.conn.commit()
         cursor.close()
         return muscle_id
+    
+    #This method deletes a primary muscle from an exercise
+    def deletePrimaryMuscle(self, exercise_id, muscle_id):
+        cursor = self.conn.cursor()
+        pre_query = """
+            SELECT 1 FROM exercise_primary_muscles
+            WHERE exercise_id = %s AND id = %s
+        """
+        cursor.execute(pre_query, (exercise_id, muscle_id))
+        exists = cursor.fetchone()
+    
+        if exists:
+            delete_query = "DELETE FROM exercise_primary_muscles WHERE exercise_id = %s and id = %s"
+            cursor.execute(delete_query, (exercise_id, muscle_id))
+            self.conn.commit()
+            cursor.close()
+            return True
+        else:
+            cursor.close()
+            return False
 
-    #seconaryMuscleAddingShii
+    #This method adds a secondary muscle to an exercise
     def addSecondaryMuscle(self, exercise_id, muscle_description):
         cursor = self.conn.cursor()
         query = "INSERT INTO exercise_secondary_muscles (exercise_id, muscle) VALUES (%s, %s) RETURNING id"

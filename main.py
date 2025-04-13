@@ -99,15 +99,18 @@ def handleChampionshipById(id):
 def addInstructionToExercise(exercise_id):
     return ExerciseHandler().addInstructionToExercise(request.json, exercise_id)
 
+
 # Delete an instruction from a specific exercise
 @app.route('/exercise/<int:exercise_id>/instruction/<int:instruction_id>', methods=['DELETE'])
 def deleteInstructionFromExercise(exercise_id, instruction_id):
     return ExerciseHandler().deleteInstructionFromExercise(exercise_id, instruction_id)
 
+
 # Add image to an exercise
 @app.route('/exercise/<int:exercise_id>/image', methods=['POST'])
 def addImageToExercise(exercise_id):
     return ExerciseHandler().addImageToExercise(request.json, exercise_id)
+
 
 # Add primary muscle to an exercise
 @app.route('/exercise/<int:exercise_id>/primary-muscle', methods=['POST'])
@@ -115,6 +118,13 @@ def addPrimaryMuscleToExercise(exercise_id):
     return ExerciseHandler().addPrimaryMuscleToExercise(request.json, exercise_id)
 
 
+#Delete a primary muscle from an exercise
+@app.route('/exercise/<int:exercise_id>/primary-muscle/<int:primary_muscle_id>', methods=['DELETE'])
+def deletePrimaryMuscleFromExercise(exercise_id, primary_muscle_id):
+    return ExerciseHandler().deletePrimaryMuscleFromExercise(exercise_id, primary_muscle_id)
+
+
+# Add secondary muscle to an exercise
 @app.route('/exercise/<int:exercise_id>/secondary-muscle', methods=['POST'])
 def addSecondaryMuscleToExercise(exercise_id):
     return ExerciseHandler().addSecondaryMuscleToExercise(request.json, exercise_id)
