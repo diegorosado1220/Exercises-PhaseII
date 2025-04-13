@@ -292,6 +292,22 @@ class ExerciseHandler:
         else:
             return jsonify("Insert Failed"), 500
 
+    #This method will ad a primary muscle to an exercise
+    def addPrimaryMuscleToExercise(self, json, exercise_id):
+        muscle_description = json["muscle_description"]
+        dao = exerciseDAO()
+        muscle_id = dao.addPrimaryMuscle(exercise_id, muscle_description)
+
+        if muscle_id:
+            result = {
+                "exercise_id": exercise_id,
+                "muscle_id": muscle_id,
+                "muscle_description": muscle_description
+            }
+            return jsonify(result), 201
+        else:
+            return jsonify("Insert Failed"), 500
+
     #This method adds a secondary muscle to an exercise
     def addSecondaryMuscleToExercise(self, json, exercise_id):
         muscle_description = json["muscle_description"]

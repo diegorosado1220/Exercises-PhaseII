@@ -117,7 +117,6 @@ def addImageToExercise(exercise_id):
 def addPrimaryMuscleToExercise(exercise_id):
     return ExerciseHandler().addPrimaryMuscleToExercise(request.json, exercise_id)
 
-
 #Delete a primary muscle from an exercise
 @app.route('/exercise/<int:exercise_id>/primary-muscle/<int:primary_muscle_id>', methods=['DELETE'])
 def deletePrimaryMuscleFromExercise(exercise_id, primary_muscle_id):
