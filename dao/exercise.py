@@ -234,24 +234,24 @@ class exerciseDAO():
         return instruction_id
 
     # This method deletes an instruction from an exercise
-    # def deleteInstruction(self, exercise_id, instruction_id):
-    #     cursor = self.conn.cursor()
-    #     pre_query = """
-    #         SELECT 1 FROM exercise_instructions
-    #         WHERE exercise_id = %s AND id = %s
-    #     """
-    #     cursor.execute(pre_query, (exercise_id, instruction_id))
-    #     exists = cursor.fetchone()
-    #
-    #     if exists:
-    #         delete_query = "DELETE FROM exercise_instructions WHERE id = %s"
-    #         cursor.execute(delete_query, (instruction_id,))
-    #         self.conn.commit()
-    #         cursor.close()
-    #         return True
-    #     else:
-    #         cursor.close()
-    #         return False
+    def deleteInstruction(self, exercise_id, instruction_id):
+        cursor = self.conn.cursor()
+        pre_query = """
+            SELECT 1 FROM exercise_instructions
+            WHERE exercise_id = %s AND id = %s
+        """
+        cursor.execute(pre_query, (exercise_id, instruction_id))
+        exists = cursor.fetchone()
+    
+        if exists:
+            delete_query = "DELETE FROM exercise_instructions WHERE exercise_id = %s and instruction_number = %s"
+            cursor.execute(delete_query, (exercise_id, instruction_id))
+            self.conn.commit()
+            cursor.close()
+            return True
+        else:
+            cursor.close()
+            return False
 
     # This method adds an image to an exercise
     def addImageToExercise(self, exercise_id, path):

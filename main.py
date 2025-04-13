@@ -100,9 +100,9 @@ def addInstructionToExercise(exercise_id):
     return ExerciseHandler().addInstructionToExercise(request.json, exercise_id)
 
 # Delete an instruction from a specific exercise
-# @app.route('/exercise/<int:exercise_id>/instruction/<int:instruction_id>', methods=['DELETE'])
-# def deleteInstructionFromExercise(exercise_id, instruction_id):
-#     return ExerciseHandler().deleteInstructionFromExercise(exercise_id, instruction_id)
+@app.route('/exercise/<int:exercise_id>/instruction/<int:instruction_id>', methods=['DELETE'])
+def deleteInstructionFromExercise(exercise_id, instruction_id):
+    return ExerciseHandler().deleteInstructionFromExercise(exercise_id, instruction_id)
 
 # Add image to an exercise
 @app.route('/exercise/<int:exercise_id>/image', methods=['POST'])

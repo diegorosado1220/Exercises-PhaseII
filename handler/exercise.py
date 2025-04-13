@@ -267,15 +267,15 @@ class ExerciseHandler:
         else:
             return jsonify("Insert Failed"), 500
 
-    # DELETE /exercise/<exercise_id>/instruction/<instruction_id>
-    # def deleteInstructionFromExercise(self, exercise_id, instruction_id):
-    #     dao = exerciseDAO()
-    #     success = dao.deleteInstruction(exercise_id, instruction_id)
-    #
-    #     if success:
-    #         return '', 204
-    #     else:
-    #         return jsonify("Not Found"), 404
+    # This method deletes an instruction from an exercise
+    def deleteInstructionFromExercise(self, exercise_id, instruction_id):
+        dao = exerciseDAO()
+        success = dao.deleteInstruction(exercise_id, instruction_id)
+    
+        if success:
+            return jsonify(f"Deleted record with exercise_id = {exercise_id} and instruction_id{instruction_id}"), 204
+        else:
+            return jsonify("Not Found"), 404
 
     # This method adds an image to an exercise
     def addImageToExercise(self, json, exercise_id):
