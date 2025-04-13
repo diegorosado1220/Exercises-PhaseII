@@ -46,6 +46,14 @@ class ExerciseHandler:
         result["name"] = secondary_muscles[1]
         return result
     
+    # This method maps the most performed exercises data to a dictionary format.
+    def map_to_dict_most_performed(self, most_performed):
+        result = {}
+        result["exercise_id"] = most_performed[0]
+        result["name"] = most_performed[1]
+        result["sports_related"] = most_performed[2]
+        return result
+    
     # This method maps the exercise data to a dictionary format for the getExerciseById method.
     # It includes instructions, images, primary muscles, and secondary muscles.
     def map_to_dic_for_getExerciseById(self, exercise, instructions, images, primary_muscles, secondary_muscles):
@@ -184,3 +192,17 @@ class ExerciseHandler:
             return jsonify(f"Cannnot delete because its referenced"), 409
         else:
             return jsonify("Not Found"), 404
+        
+        
+    def getMostPerformed(self):
+        dao = exerciseDAO()
+        most_performed = dao.getMostPerformed()
+        result = []
+        if not most_performed:
+            return jsonify("No Most Performed found"), 404
+        else:
+            for exercise in most_performed:
+                obj = self.map_to_dict_most_performed(exercise)
+                result.append(obj)
+            return jsonify(result), 200
+        

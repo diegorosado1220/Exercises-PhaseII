@@ -36,6 +36,13 @@ def handleExerciseById(id):
     else:
         return jsonify("Unsupported Method"), 405
     
+@app.route('/exercises/most-performed', methods=['GET'])
+def handleExercisesMostPerformed():
+    if request.method == 'GET':
+        return ExerciseHandler().getMostPerformed()
+    else:
+        return jsonify("Unsupported method"), 405
+    
     
 @app.route('/championships', methods=['POST', 'GET'])
 def handleChampionship():

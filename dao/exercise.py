@@ -156,3 +156,17 @@ class exerciseDAO():
         result = cursor.fetchone()
         cursor.close()
         return result
+    
+    def getMostPerformed(self):
+        cursor = self.conn.cursor()
+        query = """select exercises.id as exercise_id, exercises.name as name, count(distinct sport_exercises.sport) as sports_related
+                from exercises join sport_exercises on exercises.id = sport_exercises.exercise
+                group by exercises.id, exercises.name
+                order by sports_related desc
+                limit 5"""
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        return result
+    
+        
