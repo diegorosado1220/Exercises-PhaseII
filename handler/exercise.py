@@ -218,16 +218,6 @@ class ExerciseHandler:
         
     #This method gets the exercises used by selected muscle
     def getExercisesByMuscle(self, muscleid):
-        # dao = exerciseDAO()
-        # exercises = dao.getExercisesByMuscle(muscleid)
-        # result = []
-        # if exercises is not None:
-        #     for exercise in exercises:
-        #         obj = self.map_to_dict_Exercise_By_Muscle(exercise)
-        #         result.append(obj)
-        #     return jsonify(result), 200
-        # else:
-        #     return jsonify(f"No exercise found with muscle = {muscleid}"), 404
         
         dao = exerciseDAO()
         exercises = dao.getExercisesByMuscle(muscleid)
