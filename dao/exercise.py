@@ -266,6 +266,26 @@ class exerciseDAO():
         self.conn.commit()
         cursor.close()
         return image_id
+    
+    #This method deletes an image from an exercise
+    def deleteImage(self, exercise_id, image_id):
+        cursor = self.conn.cursor()
+        pre_query = """
+            SELECT 1 FROM exercise_images
+            WHERE exercise_id = %s AND id = %s
+        """
+        cursor.execute(pre_query, (exercise_id, image_id))
+        exists = cursor.fetchone()
+    
+        if exists:
+            delete_query = "DELETE FROM exercise_images WHERE exercise_id = %s and id = %s"
+            cursor.execute(delete_query, (exercise_id, image_id))
+            self.conn.commit()
+            cursor.close()
+            return True
+        else:
+            cursor.close()
+            return False
 
     #This method adds a primary muscle to an exercise
     def addPrimaryMuscle(self, exercise_id, muscle_description):

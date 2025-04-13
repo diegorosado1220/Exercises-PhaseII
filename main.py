@@ -112,10 +112,17 @@ def addImageToExercise(exercise_id):
     return ExerciseHandler().addImageToExercise(request.json, exercise_id)
 
 
+#Delete an image from an exercise
+@app.route('/exercise/<int:exercise_id>/image/<int:image_id>', methods=['DELETE'])
+def deleteImageFromExercise(exercise_id, image_id):
+    return ExerciseHandler().deleteImageFromExercise(exercise_id, image_id)
+
+
 # Add primary muscle to an exercise
 @app.route('/exercise/<int:exercise_id>/primary-muscle', methods=['POST'])
 def addPrimaryMuscleToExercise(exercise_id):
     return ExerciseHandler().addPrimaryMuscleToExercise(request.json, exercise_id)
+
 
 #Delete a primary muscle from an exercise
 @app.route('/exercise/<int:exercise_id>/primary-muscle/<int:primary_muscle_id>', methods=['DELETE'])
@@ -127,6 +134,8 @@ def deletePrimaryMuscleFromExercise(exercise_id, primary_muscle_id):
 @app.route('/exercise/<int:exercise_id>/secondary-muscle', methods=['POST'])
 def addSecondaryMuscleToExercise(exercise_id):
     return ExerciseHandler().addSecondaryMuscleToExercise(request.json, exercise_id)
+
+
 
 
 if __name__ == '__main__':

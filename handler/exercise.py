@@ -291,6 +291,16 @@ class ExerciseHandler:
             return jsonify(result), 201
         else:
             return jsonify("Insert Failed"), 500
+        
+    #This method deletes an image from an exercise
+    def deleteImageFromExercise(self, exercise_id, image_id):
+        dao = exerciseDAO()
+        success = dao.deleteImage(exercise_id, image_id)
+    
+        if success:
+            return jsonify(f"Deleted record with exercise_id = {exercise_id} and image_id{image_id}"), 204
+        else:
+            return jsonify("Not Found"), 404
 
     #This method will ad a primary muscle to an exercise
     def addPrimaryMuscleToExercise(self, json, exercise_id):
