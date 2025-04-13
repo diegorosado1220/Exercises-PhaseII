@@ -104,6 +104,11 @@ def addInstructionToExercise(exercise_id):
 # def deleteInstructionFromExercise(exercise_id, instruction_id):
 #     return ExerciseHandler().deleteInstructionFromExercise(exercise_id, instruction_id)
 
+# Add image to an exercise
+@app.route('/exercise/<int:exercise_id>/image', methods=['POST'])
+def addImageToExercise(exercise_id):
+    return ExerciseHandler().addImageToExercise(request.json, exercise_id)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -252,3 +252,17 @@ class exerciseDAO():
     #     else:
     #         cursor.close()
     #         return False
+
+    # This method adds an image to an exercise
+    def addImageToExercise(self, exercise_id, path):
+        cursor = self.conn.cursor()
+        query = """
+            INSERT INTO exercise_images (exercise_id, image_path)
+            VALUES (%s, %s)
+            RETURNING id
+        """
+        cursor.execute(query, (exercise_id, path))
+        image_id = cursor.fetchone()[0]
+        self.conn.commit()
+        cursor.close()
+        return image_id

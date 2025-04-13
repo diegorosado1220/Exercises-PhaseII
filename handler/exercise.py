@@ -276,3 +276,20 @@ class ExerciseHandler:
     #         return '', 204
     #     else:
     #         return jsonify("Not Found"), 404
+
+    # This method adds an image to an exercise
+    def addImageToExercise(self, json, exercise_id):
+        path = json["path"]
+        dao = exerciseDAO()
+        image_id = dao.addImageToExercise(exercise_id, path)
+
+        if image_id:
+            result = {
+                "image_id": image_id,
+                "exercise_id": exercise_id,
+                "path": path
+            }
+            return jsonify(result), 201
+        else:
+            return jsonify("Insert Failed"), 500
+
