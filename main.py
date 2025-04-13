@@ -115,5 +115,10 @@ def addPrimaryMuscleToExercise(exercise_id):
     return ExerciseHandler().addPrimaryMuscleToExercise(request.json, exercise_id)
 
 
+@app.route('/exercise/<int:exercise_id>/secondary-muscle', methods=['POST'])
+def addSecondaryMuscleToExercise(exercise_id):
+    return ExerciseHandler().addSecondaryMuscleToExercise(request.json, exercise_id)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
