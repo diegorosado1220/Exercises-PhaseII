@@ -12,6 +12,7 @@ def index():
     return "General Kenobi"
 
 
+#This route handles the /exercise endpoint for GET and POST requests.
 @app.route('/exercise', methods=['GET', 'POST'])
 def handleExercise():
     if request.method == 'GET':
@@ -21,7 +22,8 @@ def handleExercise():
     else:
         return jsonify("Unsupported method"), 405
     
-
+    
+#This route handles the /exercise/<id> endpoint for GET, PUT, and DELETE requests.
 @app.route('/exercise/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def handleExerciseById(id):
     if request.method == 'DELETE':
@@ -36,6 +38,9 @@ def handleExerciseById(id):
     else:
         return jsonify("Unsupported Method"), 405
     
+    
+#This route handles the /exercises/most-performed endpoint for GET requests.
+# It retrieves the most performed exercises from the database.
 @app.route('/exercises/most-performed', methods=['GET'])
 def handleExercisesMostPerformed():
     if request.method == 'GET':
@@ -44,6 +49,17 @@ def handleExercisesMostPerformed():
         return jsonify("Unsupported method"), 405
     
     
+#This route handles the /exercises/muscle-group/<muscleid> endpoint for GET requests.
+# It retrieves exercises by a selected muscle from the database.
+@app.route('/exercises/muscle-group/<string:muscleid>', methods=['GET'])
+def handleExercisesByMucle(muscleid):
+    if request.method == 'GET':
+        return ExerciseHandler().getExercisesByMuscle(muscleid)
+    else:
+        return jsonify("Unsupported method"), 405
+    
+    
+# This route handles the /championships endpoint for GET and POST requests.
 @app.route('/championships', methods=['POST', 'GET'])
 def handleChampionship():
     if request.method == 'GET':
@@ -52,7 +68,9 @@ def handleChampionship():
         return ChampionshipsHandler().createChampionship(request.json)
     else:
         return jsonify("Unsupported Method"), 405
-    
+
+
+# This route handles the /championships/<id> endpoint for GET, PUT, and DELETE requests.
 @app.route('/championships/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def handleChampionshipById(id):
     if request.method == 'DELETE':

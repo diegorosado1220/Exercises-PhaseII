@@ -16,6 +16,7 @@ class PartDAO():
 
         self.conn = psycopg2.connect(url)
         
+    # This method gets all championships from the database.
     def getAllChampionship(self):
         cursor = self.conn.cursor()
         query = "SELECT id, name, winner_team, winner_year FROM championships"
@@ -24,6 +25,7 @@ class PartDAO():
         cursor.close()
         return result
     
+    # This method creates a new championship in the database.
     def createChampionShip(self, name, winner_team, winner_year):
         cursor = self.conn.cursor()
         query = "INSERT INTO championships (name, winner_team, winner_year) VALUES (%s, %s, %s) RETURNING id"
@@ -33,6 +35,7 @@ class PartDAO():
         cursor.close()
         return championship_id
     
+    # This method deletes a championship by its ID from the database.
     def deleteChampionById(self, id):
         cursor = self.conn.cursor()
         pre_query = "SELECT 1 FROM championships WHERE id = %s"
@@ -48,7 +51,8 @@ class PartDAO():
             cursor.close()
             return False
         
-        
+    # This method updates a championship by its ID in the database.
+    # It takes the championship details as parameters and returns the ID of the updated championship.
     def updateChampionship(self, id, name, winner_team, winner_year):
         cursor = self.conn.cursor()
         pre_query = "SELECT 1 FROM championships WHERE id = %s"
@@ -79,6 +83,7 @@ class PartDAO():
             cursor.close()
             return state_variable
         
+    # This method gets a championship by its ID from the database.
     def getChampionshipForUpdate(self, id):
         cursor = self.conn.cursor()
         query = "SELECT id, name, winner_team, winner_year FROM championships WHERE id = %s"
@@ -87,6 +92,7 @@ class PartDAO():
         cursor.close()
         return result
     
+    # This method gets a championship by its ID from the database.
     def getChampionshipById(self, id):
         cursor = self.conn.cursor()
         query = "SELECT id, name, winner_year, winner_team FROM championships WHERE id = %s" 
@@ -95,6 +101,7 @@ class PartDAO():
         cursor.close()
         return result
     
+     #This method gets the winner team by its ID from the database for the getChampionshipById method.
     def getWinnerTeamById(self, id):
         cursor = self.conn.cursor()
         

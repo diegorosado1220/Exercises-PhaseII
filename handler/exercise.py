@@ -54,6 +54,14 @@ class ExerciseHandler:
         result["sports_related"] = most_performed[2]
         return result
     
+    # This method maps the exercises used by selected muscle data to a dictionary format.
+    def map_to_dict_Exercise_By_Muscle(self, exercises):
+        result = {}
+        result["exercise_id"] = exercises[0]
+        result["name"] = exercises[1]
+        return result
+        
+    
     # This method maps the exercise data to a dictionary format for the getExerciseById method.
     # It includes instructions, images, primary muscles, and secondary muscles.
     def map_to_dic_for_getExerciseById(self, exercise, instructions, images, primary_muscles, secondary_muscles):
@@ -157,6 +165,7 @@ class ExerciseHandler:
         else:
             return jsonify(f"No Exercise found with id={id}"), 404
 
+    #This method updates an exercise by its ID in the database.
     def updateExerciseById(self, json, id):
 
         name = json["name"]
@@ -193,7 +202,7 @@ class ExerciseHandler:
         else:
             return jsonify("Not Found"), 404
         
-        
+    #This method gets the most performed exercises.
     def getMostPerformed(self):
         dao = exerciseDAO()
         most_performed = dao.getMostPerformed()
@@ -204,5 +213,30 @@ class ExerciseHandler:
             for exercise in most_performed:
                 obj = self.map_to_dict_most_performed(exercise)
                 result.append(obj)
+            return jsonify(result), 200
+        
+        
+    #This method gets the exercises used by selected muscle
+    def getExercisesByMuscle(self, muscleid):
+        # dao = exerciseDAO()
+        # exercises = dao.getExercisesByMuscle(muscleid)
+        # result = []
+        # if exercises is not None:
+        #     for exercise in exercises:
+        #         obj = self.map_to_dict_Exercise_By_Muscle(exercise)
+        #         result.append(obj)
+        #     return jsonify(result), 200
+        # else:
+        #     return jsonify(f"No exercise found with muscle = {muscleid}"), 404
+        
+        dao = exerciseDAO()
+        exercises = dao.getExercisesByMuscle(muscleid)
+        result = []
+        for exercise in exercises:
+            obj = self.map_to_dict_Exercise_By_Muscle(exercise)
+            result.append(obj)
+        if not result:
+            return jsonify(f"No exercise found with muscle = '{muscleid}' "), 404
+        else:
             return jsonify(result), 200
         

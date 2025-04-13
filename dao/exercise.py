@@ -157,6 +157,7 @@ class exerciseDAO():
         cursor.close()
         return result
     
+    #This method gets the most performed exercises from the database.
     def getMostPerformed(self):
         cursor = self.conn.cursor()
         query = """select exercises.id as exercise_id, exercises.name as name, count(distinct sport_exercises.sport) as sports_related
@@ -169,4 +170,21 @@ class exerciseDAO():
         cursor.close()
         return result
     
-        
+    #This method gets Exercises by a selected muscle from the database.
+    def getExercisesByMuscle(self, muscleid):
+        cursor = self.conn.cursor()
+        query =     """select distinct exercises.id as exercise_id, exercises.name as name
+                    from exercises
+                    join exercise_secondary_muscles on  exercises.id = exercise_secondary_muscles.exercise_id
+                    join exercise_primary_muscles on exercises.id = exercise_primary_muscles.exercise_id
+                    where lower(exercise_primary_muscles.muscle) = lower(%s) or lower(exercise_secondary_muscles.muscle) = lower(%s)
+                    order by exercises.id"""
+        cursor.execute(query, (muscleid, muscleid))
+        result = cursor.fetchall()
+        cursor.close
+        return result
+                    
+                    
+                    
+                    
+    
