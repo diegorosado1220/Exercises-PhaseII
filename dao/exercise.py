@@ -183,7 +183,42 @@ class exerciseDAO():
         result = cursor.fetchall()
         cursor.close
         return result
-
+    
+    #get the most complex exercises from the database
+    # This method retrieves the most complex exercises based on the number of unique muscle groups involved.
+    def getMostComplexExercises(self):
+        cursor = self.conn.cursor()
+        query = """WITH all_muscles AS (
+                SELECT exercise_id, muscle FROM exercise_primary_muscles
+                UNION
+                SELECT exercise_id, muscle FROM exercise_secondary_muscles
+                ),
+                muscle_counts AS (
+                    SELECT exercise_id, COUNT(DISTINCT muscle) AS muscle_count
+                    FROM all_muscles
+                    GROUP BY exercise_id
+                ),
+                max_count AS (
+                    SELECT MAX(muscle_count) AS max_muscles FROM muscle_counts
+                ),
+                top_exercises AS (
+                    SELECT mc.exercise_id
+                    FROM muscle_counts mc
+                    JOIN max_count m ON mc.muscle_count = m.max_muscles
+                )
+                SELECT
+                    e.id AS exercise_id,
+                    e.name,
+                    ARRAY_AGG(DISTINCT am.muscle) AS muscle_groups
+                FROM top_exercises te
+                JOIN exercises e ON e.id = te.exercise_id
+                JOIN all_muscles am ON e.id = am.exercise_id
+                GROUP BY e.id, e.name;"""
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        return result
+    
     # This method adds a new instruction to an exercise
     def addInstruction(self, exercise_id, instruction_number, description):
         cursor = self.conn.cursor()

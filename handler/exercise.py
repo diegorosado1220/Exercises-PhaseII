@@ -60,6 +60,13 @@ class ExerciseHandler:
         result["exercise_id"] = exercises[0]
         result["name"] = exercises[1]
         return result
+    
+    def map_to_dict_Most_Complex_Exercises(self, exercises):
+        result = {}
+        result["exercise_id"] = exercises[0]
+        result["name"] = exercises[1]
+        result["muscle_groups"] = exercises[2]
+        return result
         
     
     # This method maps the exercise data to a dictionary format for the getExerciseById method.
@@ -229,8 +236,16 @@ class ExerciseHandler:
             return jsonify(f"No exercise found with muscle = '{muscleid}' "), 404
         else:
             return jsonify(result), 200
-
-
+        
+    #This method gets the most complex exercises.
+    def getMostComplexExercises(self):
+        dao = exerciseDAO()
+        exercise_list = dao.getMostComplexExercises()
+        result_list = []
+        for exercise in exercise_list:
+            obj = self.map_to_dict_Most_Complex_Exercises(exercise)
+            result_list.append(obj)
+        return jsonify(result_list), 200
 
     #this method is to add instruction to exercise
     # POST /exercise/<exercise_id>/instruction

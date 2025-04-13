@@ -58,6 +58,16 @@ def handleExercisesByMucle(muscleid):
     else:
         return jsonify("Unsupported method"), 405
     
+    
+#This route handles the /exercises/most-complex endpoint for GET requests.
+# It retrieves the most complex exercises from the database. 
+@app.route('/exercises/most-complex', methods=['GET'])
+def handleComplexExercises():
+    if request.method == 'GET':
+        return ExerciseHandler().getMostComplexExercises()
+    else:
+        return jsonify("Unsupported method"), 405
+    
 
 
 # This route handles the /championships endpoint for GET and POST requests.
