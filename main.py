@@ -140,6 +140,14 @@ def addSecondaryMuscleToExercise(exercise_id):
 def deleteSecondaryMuscleFromExercise(exercise_id, secondary_muscle_id):
     return ExerciseHandler().deleteSecondaryMuscleFromExercise(exercise_id, secondary_muscle_id)
 
+# Returns Teams with most Champipnships
+@app.route('/championships/most-wins', methods=['GET'])
+def getTeamsWithMostWins():
+    if request.method == 'GET':
+        return ChampionshipsHandler().getTeamsWithMostChampionships()
+    else:
+        return jsonify("Unsupported method"), 405
+
 
 
 

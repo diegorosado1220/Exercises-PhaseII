@@ -115,6 +115,20 @@ class PartDAO():
         
         cursor.close()
         return result
+    
+    #This method get the top 5 Team's with most Championships
+    def getTeamsWithMostChampionShips(self):
+        cursor = self.conn.cursor()
+        query = """
+            SELECT teams.id as team_id, teams.name as name, count(*)
+            from teams join championships on teams.id = championships.winner_team
+            group by teams.id, teams.name
+            order by count(*) desc
+            limit 5"""
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        return result
         
         
         

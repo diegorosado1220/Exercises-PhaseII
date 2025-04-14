@@ -3,6 +3,7 @@ from dao.championship import PartDAO
 
 class ChampionshipsHandler:
     
+    
     # This method maps the championship data to a dictionary format.
     def map_to_dict(self, championship):
         result = {}
@@ -12,12 +13,22 @@ class ChampionshipsHandler:
         result["winner_year"] = championship[3]
         return result
     
+    
     # This method maps the winner team data to a dictionary format.
     def map_to_dict_teams(self, winnerTeam):
         result = {}
         result["team_id"] = winnerTeam[0]
         result["name"] = winnerTeam[1]
         return result
+    
+    # This method maps is for getTeamsWithMostChampionships Method
+    def map_to_dict_teams(self, team):
+        result = {}
+        result["team_id"] = team[0]
+        result["name"] = team[1]
+        result["total_wins"] = team[2]
+        return result
+    
     
     # This method maps the championship data for update to a dictionary format.
     def map_to_dic_for_update(self, championship, winnerTeam):
@@ -28,6 +39,7 @@ class ChampionshipsHandler:
         result["winner_team"] = self.map_to_dict_teams(winnerTeam)
         return result
     
+    
     #This method gets all championships from the database.
     def getAllChampionship(self):
         dao = PartDAO()
@@ -37,6 +49,7 @@ class ChampionshipsHandler:
             obj = self.map_to_dict(championship)
             result.append(obj)
         return jsonify(result), 200
+    
     
     #This method creates a new championship in the database.
     def createChampionship(self, json):
@@ -66,6 +79,7 @@ class ChampionshipsHandler:
         else:
             return jsonify("Not Found"), 404
     
+    
     # This method updates a championship by its ID in the database.
     # It takes the championship details as parameters and returns the updated championship.
     def updateChampionshipById(self, json, id):
@@ -91,6 +105,7 @@ class ChampionshipsHandler:
             else:
                 return jsonify("Not Found"), 404
         
+        
     # This method gets a championship by its ID from the database.
     def getChampionshipById(self, id):
         
@@ -105,6 +120,16 @@ class ChampionshipsHandler:
         else:
             return jsonify("Not Found"), 404
         
+        
+    # This method gets the teams with the most championships from the database.
+    def getTeamsWithMostChampionships(self):
+        dao = PartDAO()
+        teams = dao.getTeamsWithMostChampionShips()
+        result = []
+        for team in teams:
+            obj = self.map_to_dict_teams(team)
+            result.append(obj)
+        return jsonify(result), 200        
         
     
     
