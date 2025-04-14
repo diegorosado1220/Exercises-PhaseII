@@ -317,6 +317,16 @@ class ExerciseHandler:
             return jsonify(result), 201
         else:
             return jsonify("Insert Failed"), 500
+        
+    #This method deletes a primary muscle from an exercise
+    def deletePrimaryMuscleFromExercise(self, exercise_id, primary_muscle_id):
+        dao = exerciseDAO()
+        success = dao.deletePrimaryMuscle(exercise_id, primary_muscle_id)
+    
+        if success:
+            return jsonify(f"Deleted record with exercise_id = {exercise_id} and primary_muscle_id{primary_muscle_id}"), 204
+        else:
+            return jsonify("Not Found"), 404
 
     #This method adds a secondary muscle to an exercise
     def addSecondaryMuscleToExercise(self, json, exercise_id):
@@ -334,12 +344,13 @@ class ExerciseHandler:
         else:
             return jsonify("Insert Failed"), 500
         
-    #This method deletes a primary muscle from an exercise
-    def deletePrimaryMuscleFromExercise(self, exercise_id, primary_muscle_id):
+    #This method deletes a secondary muscle from an exercise
+    def deleteSecondaryMuscleFromExercise(self, exercise_id, secondary_muscle_id):
         dao = exerciseDAO()
-        success = dao.deletePrimaryMuscle(exercise_id, primary_muscle_id)
+        success = dao.deleteSecondaryMuscle(exercise_id, secondary_muscle_id)
     
         if success:
-            return jsonify(f"Deleted record with exercise_id = {exercise_id} and primary_muscle_id{primary_muscle_id}"), 204
+            return jsonify(f"Deleted record with exercise_id = {exercise_id} and secondary_muscle_id{secondary_muscle_id}"), 204
         else:
             return jsonify("Not Found"), 404
+        

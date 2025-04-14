@@ -135,6 +135,11 @@ def deletePrimaryMuscleFromExercise(exercise_id, primary_muscle_id):
 def addSecondaryMuscleToExercise(exercise_id):
     return ExerciseHandler().addSecondaryMuscleToExercise(request.json, exercise_id)
 
+# Delete a secondary muscle from an exercise
+@app.route('/exercise/<int:exercise_id>/secondary-muscle/<int:secondary_muscle_id>', methods=['DELETE'])
+def deleteSecondaryMuscleFromExercise(exercise_id, secondary_muscle_id):
+    return ExerciseHandler().deleteSecondaryMuscleFromExercise(exercise_id, secondary_muscle_id)
+
 
 
 

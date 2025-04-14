@@ -326,3 +326,23 @@ class exerciseDAO():
         self.conn.commit()
         cursor.close()
         return muscle_id
+    
+    #This method deletes a secondary muscle from an exercise
+    def deleteSecondaryMuscle(self, exercise_id, muscle_id):
+        cursor = self.conn.cursor()
+        pre_query = """
+            SELECT 1 FROM exercise_secondary_muscles
+            WHERE exercise_id = %s AND id = %s
+        """
+        cursor.execute(pre_query, (exercise_id, muscle_id))
+        exists = cursor.fetchone()
+    
+        if exists:
+            delete_query = "DELETE FROM exercise_secondary_muscles WHERE exercise_id = %s and id = %s"
+            cursor.execute(delete_query, (exercise_id, muscle_id))
+            self.conn.commit()
+            cursor.close()
+            return True
+        else:
+            cursor.close()
+            return False
